@@ -1,0 +1,9 @@
+{
+  "presets": ["@parcel/babel-preset-env"],
+  "env": {
+    "development": {
+      "plugins": ["babel-plugin-run-only-in-dev"]
+    }
+  },
+  "plugins": ["@parcel/babel-plugin-transform-runtime"]
+}

@@ -1,0 +1,58 @@
+name: Deploy Vercel Dev
+
+on:
+  push:
+    branches:
+      - dev
+  # repository_dispatch:
+  #   types: [custom_event_type, wordpress]
+  # workflow_dispatch:
+  #   branches:
+  #     - dev
+
+jobs:
+  deploy-vercel-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Cache Dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Setup project Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: v14.17.6
+
+      - name: Prepare project environment
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          WORDPRESS_API_URL: ${{ secrets.WORDPRESS_API_URL}}
+          SENDGRID_API_KEY: ${{ secrets.NEXT_PUBLIC_SENDGRID_API_KEY }}
+          S3_UPLOAD_KEY: ${{ secrets.NEXT_PUBLIC_S3_UPLOAD_KEY }}
+          S3_UPLOAD_SECRET: ${{ secrets.NEXT_PUBLIC_S3_UPLOAD_SECRET }}
+          S3_UPLOAD_BUCKET: ${{ secrets.NEXT_PUBLIC_S3_UPLOAD_BUCKET }}
+          S3_UPLOAD_REGION: ${{ secrets.NEXT_PUBLIC_S3_UPLOAD_REGION }}
+          RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          GOOGLE_MAP_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_KEY }}
+
+      - name: Deploy build to Vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          #github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  #Required
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} #Required
+          github-comment: false
+          alias-domains: | #Optional
+            soe-next-2022.vercel.app

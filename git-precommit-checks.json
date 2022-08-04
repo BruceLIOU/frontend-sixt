@@ -1,0 +1,27 @@
+{
+  "display": {
+    "notifications": true,
+    "offendingContent": true,
+    "rulesSummary": true,
+    "shortStats": true,
+    "verbose": true
+  },
+  "rules": [
+    {
+      "filter": "\\.js$",
+      "message": "🤫 Oula, aurais-tu oublié des `console.log` inopportuns ?",
+      "nonBlocking": "true",
+      "regex": "console\\.log"
+    },
+    {
+      "message": "😨 On dirait que tu as oublié des marqueurs de conflits",
+      "regex": "/^[<>|=]{4,}/m"
+    },
+    {
+      "filter": "^package\\.json$",
+      "message": "🤔 Aurais-tu oublié de finir des développement ?",
+      "nonBlocking": "true",
+      "regex": "(?:FIXME|TODO)"
+    }
+  ]
+}
