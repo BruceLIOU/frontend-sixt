@@ -2,7 +2,7 @@ module.exports = {
   singleQuote: true,
   printWidth: 120,
   trailingComma: 'es5',
-  semi: false,
+  semi: true,
   singleQuote: true,
   jsxSingleQuote: true,
   overrides: [
@@ -13,4 +13,4 @@ module.exports = {
       },
     },
   ],
-}
+};

@@ -1,0 +1,19 @@
+.footer {
+  background-color: black;
+  color: white;
+  padding: 1.5rem 2rem;
+
+  ul {
+    display: flex;
+    gap: 2rem;
+
+    > li {
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &:hover {
+        color: #ff5f00;
+      }
+    }
+  }
+}
